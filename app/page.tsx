@@ -1,103 +1,184 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import {
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  encodePassphrase,
+  generateRoomId,
+  randomString,
+} from "@/lib/client-utils";
+import { Dialog } from "@radix-ui/react-dialog";
+import { Copy } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { MouseEventHandler, useState } from "react";
+import { toast } from "sonner";
+import styles from "../styles/Home.module.css";
 
-export default function Home() {
+export default function Page() {
+  const router = useRouter();
+  const [e2ee, setE2ee] = useState(false);
+  const [sharedPassphrase, setSharedPassphrase] = useState(randomString(64));
+
+  const [meetingLink, setMeetingLink] = useState("");
+  const [meetingSchedule, setMeetingSchedule] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const startMeeting = () => {
+    if (e2ee) {
+      router.push(
+        `/rooms/${generateRoomId()}#${encodePassphrase(sharedPassphrase)}`
+      );
+    } else {
+      router.push(`/rooms/${generateRoomId()}`);
+    }
+  };
+
+  const onScheduleMeeting = () => {
+    setMeetingSchedule(`${location.origin}/rooms/${generateRoomId()}`);
+    setOpen(true);
+  };
+
+  const onCopyScheduledMeeting: MouseEventHandler = (e) => {
+    e.preventDefault();
+    window.navigator.clipboard.writeText(meetingSchedule);
+    toast.success("Copied meeting link");
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <main className={styles.main} data-lk-theme="default">
+      <section className="max-w-xl text-center flex flex-col items-center justify-center h-screen">
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+          className="mb-18"
+          src={process.env.NEXT_PUBLIC_HOST_IMAGE || "/images/garth.png"}
+          width={300}
+          height={300}
+          alt="logo"
         />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        <div className="p-1">
+          <h1 className="text-3xl font-semibold md:text-4xl">
+            Video Calls With AI Agents
+          </h1>
+          <p className="text-xl mt-4">lets dev stuff</p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        <div className="flex flex-col">
+          <div className="flex flex-col mt-8 gap-4 justify-center w-full md:flex-row md:w-auto">
+            <DropdownMenu>
+              <DropdownMenuTrigger className="lk-button">
+                New Meeting
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    className="py-3 px-4 text-base"
+                    onClick={startMeeting}
+                  >
+                    Start meeting now
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="py-3 px-4 text-base"
+                    onClick={onScheduleMeeting}
+                  >
+                    Create meeting for later
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <div className="w-full flex md:w-auto justify-between items-center">
+              <input
+                className="lk-form-control w-auto flex-grow"
+                type="text"
+                placeholder="Enter a link"
+                value={meetingLink}
+                onChange={(e) => setMeetingLink(e.target.value)}
+              />
+              <span
+                className="ml-2 cursor-pointer hover:text-white/80"
+                onClick={() => {
+                  if (meetingLink) {
+                    router.push(meetingLink);
+                  }
+                }}
+              >
+                Join
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-4 mt-6 justify-items-start">
+            <div className="flex flex-row gap-4">
+              <input
+                id="use-e2ee"
+                type="checkbox"
+                checked={e2ee}
+                onChange={(ev) => setE2ee(ev.target.checked)}
+              />
+              <Label htmlFor="use-e2ee">Enable end-to-end encryption</Label>
+            </div>
+            {e2ee && (
+              <div className="flex flex-row gap-4">
+                <Label htmlFor="passphrase">Passphrase</Label>
+                <input
+                  id="passphrase"
+                  type="password"
+                  value={sharedPassphrase}
+                  onChange={(ev) => setSharedPassphrase(ev.target.value)}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+      <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Schedule a Meeting</DialogTitle>
+            <DialogDescription>
+              Anyone who has this link will be able to view this.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex items-center space-x-2">
+            <div className="grid flex-1 gap-2">
+              <Label htmlFor="link" className="sr-only">
+                Link
+              </Label>
+              <Input id="link" value={meetingSchedule} readOnly />
+            </div>
+            <Button
+              type="submit"
+              size="sm"
+              className="px-3"
+              onClick={onCopyScheduledMeeting}
+            >
+              <span className="sr-only">Copy</span>
+              <Copy />
+            </Button>
+          </div>
+          <DialogFooter className="sm:justify-start">
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">
+                Close
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </main>
   );
 }
