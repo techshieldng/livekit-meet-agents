@@ -17,7 +17,8 @@ from livekit.agents import (
 )
 from livekit.agents.llm import function_tool
 from livekit.agents.voice import MetricsCollectedEvent
-from livekit.plugins import deepgram, openai, silero, turn_detector
+from livekit.plugins import deepgram, openai, silero
+from livekit.plugins.turn_detector.english import EnglishModel
 
 # uncomment to enable Krisp background voice/noise cancellation
 # currently supported on Linux and MacOS
@@ -39,7 +40,7 @@ class MyAgent(Agent):
     async def on_enter(self):
         # when the agent is added to the session, it'll generate a reply
         # according to its instructions
-        self.session.generate_reply(instructions="greet the user and ask about their day")
+        self.session.generate_reply(instructions="Say something similar to 'Hey I'm Jenna, how can I help you today?'")
 
     # all functions annotated with @function_tool will be passed to the LLM when this
     # agent is active
@@ -85,9 +86,9 @@ async def entrypoint(ctx: JobContext):
         # any combination of STT, LLM, TTS, or realtime API can be used
         llm=openai.LLM(model="gpt-4o-mini"),
         stt=deepgram.STT(model="nova-3"),
-        tts=openai.TTS(voice="ash"),
+        tts=openai.TTS(voice="alloy"),
         # use LiveKit's turn detection model
-        turn_detection=turn_detector.EOUModel(),
+        turn_detection=EnglishModel(),
     )
 
     # log metrics as they are emitted, and total usage after session is over
