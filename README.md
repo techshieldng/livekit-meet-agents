@@ -1,7 +1,7 @@
 # LiveKit Meet with AI Agents
 A video meeting web app that can request AI agents to join. Setup for voice agents that you can give a profile image or an avatar agent that will display the avatar's video.
 
-Demo Video: [LiveKit Meet Agents Demo Video]([https://github.com/kylecampbell/livekit-voice-agent-python](https://youtu.be/HoKk1KlDwq0?si=zGPH1_tl9KPbjAWI))
+Demo Video: [LiveKit Meet Agents Demo Video](https://youtu.be/HoKk1KlDwq0?si=zGPH1_tl9KPbjAWI)
 
 ## Getting Started
 
