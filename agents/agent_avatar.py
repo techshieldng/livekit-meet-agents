@@ -49,7 +49,7 @@ async def entrypoint(ctx: JobContext):
         # audio is forwarded to the avatar, so we disable room audio output
         room_output_options=RoomOutputOptions(audio_enabled=False),
     )
-    session.generate_reply(instructions='Hello, how can I help you today?')
+    session.generate_reply(instructions="Say something similar to 'Hey I'm Michael, how can I help you today?'")
 
 
 def prewarm(proc: JobProcess):
