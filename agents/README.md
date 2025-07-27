@@ -6,7 +6,7 @@ pip install -r requirements.txt
 
 ```console
 python agent_voice.py download-files
-python agent_avatar.py download-files
+python avatar_bey.py download-files
 ```
 
 ```console
@@ -14,5 +14,5 @@ python agent_voice.py dev
 ```
 
 ```console
-python agent_avatar.py dev
+python avatar_bey.py dev
 ```
