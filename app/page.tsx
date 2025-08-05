@@ -73,9 +73,9 @@ export default function Page() {
         />
         <div className="p-1">
           <h1 className="text-3xl font-semibold md:text-4xl">
-            Video Calls With AI Agents
+            VICTORIA PRO 1.1
           </h1>
-          <p className="text-xl mt-4">lets dev stuff</p>
+          <p className="text-xl mt-4">Need help or have enquiries? Contact Voltcom Technologies LTD +2348061502262.</p>
         </div>
         <div className="flex flex-col">
           <div className="flex flex-col mt-8 gap-4 justify-center w-full md:flex-row md:w-auto">
